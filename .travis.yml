@@ -1,0 +1,30 @@
+language: java
+jdk:
+  - openjdk8
+services:
+  - docker
+# env:
+#   global:
+#     secure: IMAGE_NAME
+#     secure: DOCKER_USER
+#     secure: DOCKER_PASS
+# replace the following env configurations with your own
+env:
+  global:
+    - secure: "cPtuaGvk/zrBa5wMI+Jkm5avkEVl+aLWIORgcLJlg9PNL48Q0oEHaJXAQSh3J/YQ1EWLYjYv5p3qB1B31mVv374sMWvszchyIACB2i8RBGFvmZhDe3rfs1dScRM/jztjaFDiGLKx3nghh2yKONJQYAo7a3S/EHUxE4+J+ah6k83vgv2baqBGOwPx8IA1M2wjNhabI2CTnznuVOAB1YtsU0lbolQBRKaA3Qd518bqOTgLtw/QKP59NJdAYvS9NKh0SBpq6TVddiadIgfoOZnjDcjqIkReplPF5XfbbWIEghYarfQX4MvUpJrx2w7ACQb4xLXUVU+VjA0C/EOCRFIW78V9KvXswK1Ee1/hZ52vlIt7PmLGVKE40KSds6bkW4Az7rHzhfmtCW+mJqEeCLpsDxF3wuGRyydh7LEBLLNvtkSEnLidMJZB4DprbYRgunxzIPXFZk3CC5sWPhl+MQXnKcBwlFT+w29Vde+zN5gimSsdePzMnyqoqWImsvzAZ/QnQBtK1iSaj/GCqErvXheNqN+awTm2NiS6fujeZ156MsVQUYiHLX0iFJwzMM6dKhZiDZKaResq/+fvCqzmId0MjODtYLPSi2+nQc8///iclVYem4C3CDGMhzKnYtsKeI9IO7sPtaiGm18LB7my7M9feUU51+ZF68+z0kNKCWqC9Sk="
+    - secure: "dBgNyO84V59C8QMWqsewDjxwJrWzuunKaRgT2+NtY4H8wNRa7Ivd5uevuFxbCBPSVToX/0tm0b5K338nRbYSPZ+Jb2y1WafZEoQi2cEnrJtUa/93KL39i0eOH/W+5k1IKJ8FUn7jN8dMiwTAvYXjj4JeOjWMlWyhuCu+nvd+lyQv2etiaNIEWbgxTS8qrPSfH2gAQ1flx9HQlFcWcsOs0U719XbYyL5gZ+mHgdxYbdlkdj2ahzcsJhvRlSiou4PgJLjhclpK6zQsYtAI8sOO6oTt62Osi24Tk8o22B39Wp7d5bxy6Ld0Yjs6pmj4OoTZGvSTjSB8lRFuxFc4RN82HHA89C90tRxpC/nceSSBi3a5hYpQsBY1FKBmbFNTGNKIDkKTopNsasx2GCorqLnaannSJ2oM4iC/HC7p1uX7o9spP5ofG/xtDqoENyBTCX72bYxW5k8JGLr+jMiJc1w8BHYftNngiW0rJ6j3ubyjONTd8Dj4RBoTTY1R0rNmMrxVhsWXYDRPgAI4ahqO9ZBNcTDOumg8lSqUgo/LeDmcwzMJaoeIjDpfsjdI46AKZa/FFwZPj+amMtMiXSbgi2Zfbw5aECcrVyfkbt0iFeKRdpr0wF4QoNJWUlbZsyJ//Gqi6eT6yyFpPXmMzhazMFVNZmj16zF+GgunfSZMSAvvWYM="
+    - secure: "m/+yU/o83ZBQbWo1PqLTB90MCk+kgXj8mAq4iG5YJ9AKrB8R2qCV1wudSDGb7d5uXm0CBxyWPKj4WyuUDT0ghlgKNyBoIcYm47/yj1Yqgn3ZjFmRmpOxJduBRTA2Z2AE3firbjjxhax5rt+rBVvFnUZUuSsaHro2xBmGEZlpty0I4F02AOZKijkPPOvvwxMZuQFxP9y5192ZX3H1W+L+x7SnPLPTRdwWnBs6SFqKebPTHyb2p9WVyjfwPhzh1MoFEm/gI/PHhN8UZ0aFZaF/bCyPnJKN5lquke21vTb+R/TXhgyXJdgT0d6ndkaPZvXK4AZwz92jD7y/74LqYY0mA4nPIgj4MWCc7ZWu2it2pEWdMQQbLr+odol6v9L1rP0uNBEs+Pl4XTJDPO7cOW6rnxY1cdvP6eTK+f93GMCb/sFxKFgw+1Yb2ld5gAUydYs3uMvAYQumoQxKjkvxFWd04mGM7Ni2cp3M0QKQQ4cnNKQzBOAjHmnpkmVUnAWE3HRDFOi3a1AwFjq/5Ui93aC+fF3/ytOIqDOkfNeB3DSFtdlB4u8ZZ+BzfU3rx+c0quvwLUBFoQJ1ZRnz2miWOaKKS7Uv/moSNP6nzbCgaTKc5hyOALcBT6lSnej8G8uM7QxkBsfSfOqV41LcP/6spH3+f9jM0syGuH8mjobVxliRZAY="
+before_install:
+  - docker pull openjdk:8-jdk-alpine
+# Test & Build SpringBoot app
+script:
+  - mvn test
+  - mvn clean package
+# Create Docker image for our app and push it to Dockerhub repository and send messages to the Teams channel after the `script` job is successfully executed
+after_success:
+  - export COMMIT=${TRAVIS_COMMIT::7}
+  - export TAG=`if [ ! -z "$TRAVIS_TAG" ]; then echo "$TRAVIS_TAG"; else echo "$TRAVIS_BRANCH--$COMMIT"; fi`
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker-compose build
+  - docker tag $IMAGE_NAME:latest $IMAGE_NAME:$TAG
+  - docker push $IMAGE_NAME:$TAG
