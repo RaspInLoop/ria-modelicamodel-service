@@ -24,8 +24,7 @@ script:
 after_success:
   - export COMMIT=${TRAVIS_COMMIT::7}
   - mvn help:evaluate -N -Dexpression=project.version | grep -v '\['
-  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version | grep
-  -v '\[')
+  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version | grep -v '\[')
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker build --tag $IMAGE_NAME
   - docker tag $IMAGE_NAME:latest $IMAGE_NAME:$project_version
