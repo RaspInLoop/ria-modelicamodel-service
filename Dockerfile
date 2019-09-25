@@ -1,7 +1,7 @@
 FROM raspinloop/openmodelicabase
 MAINTAINER admin@raspinloop.org
 
-ADD target/modelicaModelService-0.0.1-SNAPSHOT.jar app.jar
+ADD target/modelicaModel-service-$jar_revision.jar app.jar
 RUN sh -c 'touch /app.jar'
 
 ENV JAVA_OPTS="-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8787,suspend=n"
