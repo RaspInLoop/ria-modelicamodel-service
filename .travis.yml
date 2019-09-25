@@ -3,9 +3,12 @@ jdk:
   - openjdk8
 services:
   - docker
+cache:
+  directories:
+  - "$HOME/.m2"
 # env:
 #   global:
-#     secure: IMAGE_NAME
+#     secure: IMAGE_NAME ??
 #     secure: DOCKER_USER
 #     secure: DOCKER_PASS
 # replace the following env configurations with your own
@@ -26,6 +29,6 @@ after_success:
   - mvn help:evaluate -N -Dexpression=project.version | grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version | grep -v '\[')
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker build --tag $IMAGE_NAME
-  - docker tag $IMAGE_NAME:latest $IMAGE_NAME:$project_version
-  - docker push $IMAGE_NAME:$project_version
+  - docker build --tag raspinloop/modelicamodel-service
+  - docker tag raspinloop/modelicamodel-service:latest raspinloop/modelicamodel-service:$project_version
+  - docker push raspinloop/modelicamodel-service:$project_version
