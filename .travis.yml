@@ -23,12 +23,6 @@ before_install:
 script:
   - mvn test
   - mvn clean package
-# Create Docker image for our app and push it to Dockerhub repository and send messages to the Teams channel after the `script` job is successfully executed
-after_success:
-  - export COMMIT=${TRAVIS_COMMIT::7}
-  - mvn help:evaluate -N -Dexpression=project.version | grep -v '\['
-  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version | grep -v '\[')
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker build --build-arg jar_revision=${project_version} --tag raspinloop/modelicamodel-service .
-  - docker tag raspinloop/modelicamodel-service:latest raspinloop/modelicamodel-service:${project_version}
-  - docker push raspinloop/modelicamodel-service:${project_version}
+    # Create Docker image for our app and push it to Dockerhub repository.
+  - sh deployment/docker_build_push.sh
+  - 
