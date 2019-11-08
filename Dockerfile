@@ -1,4 +1,4 @@
-FROM raspinloop/openmodelicabase
+FROM raspinloop/openmodelicabase:release-v1.0
 MAINTAINER admin@raspinloop.org
 
 ARG JAR_FILE
