@@ -3,4 +3,7 @@ spring:
     name: modelicaModelService
   cloud:
     config:
-     uri: http://raspinloop-config-server:8888
+      uri: http://raspinloop-config-server:8888
+      fail-fast: true
+      retry:
+        max-attempts: 20
